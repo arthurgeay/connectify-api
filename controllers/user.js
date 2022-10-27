@@ -10,15 +10,15 @@ exports.getUsers = async (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
-  const user = new User({
-    fullname: req.body.fullname,
-    age: req.body.age,
-    city: req.body.city,
-  });
-
   try {
+    const user = new User({
+      fullname: req.body.fullname,
+      age: req.body.age,
+      city: req.body.city,
+    });
     await user.save();
-    return res.status(201).json({ message: "User created" });
+
+    return res.status(201).json(user);
   } catch (err) {
     return res.status(400).json(err);
   }

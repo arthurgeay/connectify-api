@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const userRoutes = require("./routes/user");
+const activityRoutes = require("./routes/activity");
 
 mongoose
   .connect(
@@ -17,5 +18,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRoutes);
+app.use("/activities", activityRoutes);
 
 module.exports = app;
