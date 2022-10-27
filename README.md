@@ -1,6 +1,6 @@
 # API
 
-## Installation 
+## Installation
 
 ```bash
   # Install dependencies

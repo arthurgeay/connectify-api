@@ -41,9 +41,10 @@ exports.updateUser = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   try {
     await User.deleteOne({ _id: req.params.id });
-    // TODO delete all activities of this user
+    await Activity.deleteMany({ user: req.params.id });
     return res.json({ message: "User deleted" });
   } catch (err) {
+    console.log(err);
     return res.status(400).json(err);
   }
 };
