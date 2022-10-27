@@ -1,6 +1,6 @@
 # connectify
 
-Web application & API for managing personal data related to sports
+Web application & API for managing personal data related to sports 
 
 ## Installation
 
