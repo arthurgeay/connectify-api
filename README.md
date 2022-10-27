@@ -1,8 +1,18 @@
-# connectify
-
-Web application & API for managing personal data related to sports 
+# API
 
 ## Installation
 
-- [Installation for frontend application](front/README.md)
-- [Installation for API](back/README.md)
+```bash
+  # Install dependencies
+  npm ci
+
+  # Copy environment variables file example and fill it
+  cp .env.dist .env
+```
+
+## Usage
+
+```bash
+# Run development server
+npm run dev
+```
