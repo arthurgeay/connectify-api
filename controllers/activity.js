@@ -9,6 +9,19 @@ exports.getActivities = async (req, res, next) => {
   }
 };
 
+exports.getActivity = async (req, res, next) => {
+  try {
+    const activity = await Activity.findOne({
+      _id: req.params.activityId,
+      user: req.params.userId,
+    });
+
+    return res.json(activity);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 exports.createActivity = async (req, res, next) => {
   try {
     const activity = new Activity({
