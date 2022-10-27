@@ -1,4 +1,4 @@
-# Front application
+# API
 
 ## Installation
 
