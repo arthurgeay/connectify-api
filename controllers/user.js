@@ -9,6 +9,15 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    return res.json(user);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
 exports.createUser = async (req, res, next) => {
   try {
     const user = new User({
