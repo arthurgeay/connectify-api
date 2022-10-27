@@ -4,10 +4,10 @@
   "description": "Web application & API for managing personal data related to sports",
   "main": "index.js",
   "scripts": {
-       "postinstall": "if [ $CLIENT_ENV ]; then npm run postinstall-client; elif [ $SERVER_ENV ]; then npm run postinstall-server; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
-       "postinstall-client": "cd client && npm ci && npm run build",
-       "postinstall-server": "cd back && npm ci"
-   },
+    "postinstall": "if [ $CLIENT_ENV ]; then npm run postinstall-client; elif [ $SERVER_ENV ]; then npm run postinstall-server; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+    "postinstall-client": "cd front && npm ci && npm run build",
+    "postinstall-server": "cd back && npm ci"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arthurgeay/connectify.git"
