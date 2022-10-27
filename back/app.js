@@ -4,6 +4,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const userRoutes = require("./routes/user");
+
 mongoose
   .connect(
     `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
@@ -14,17 +16,6 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-const users = [];
-
-app.get("/users", (req, res, next) => {
-  res.status(200).json({
-    message: "It works",
-  });
-});
-
-app.post("/users", (req, res, next) => {
-  users.push(req.body);
-  res.send(users);
-});
+app.use("/users", userRoutes);
 
 module.exports = app;
