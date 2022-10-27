@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Activity = require("../models/activity");
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -49,8 +50,8 @@ exports.updateUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
-    await User.deleteOne({ _id: req.params.id });
     await Activity.deleteMany({ user: req.params.id });
+    await User.deleteOne({ _id: req.params.id });
     return res.json({ message: "User deleted" });
   } catch (err) {
     console.log(err);
