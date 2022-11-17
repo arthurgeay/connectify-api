@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const authMiddleware = require("./middleware/auth");
+const rateLimiterMiddleware = require("./middleware/rateLimiter");
 
 const apiUserRoutes = require("./routes/apiUser");
 const userRoutes = require("./routes/user");
@@ -19,6 +20,7 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
+app.use(rateLimiterMiddleware);
 
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
