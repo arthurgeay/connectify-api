@@ -67,5 +67,5 @@ exports.getUserProfile = async (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  return res.json(user);
+  return res.json({ ...req.limit, email: user.email });
 };

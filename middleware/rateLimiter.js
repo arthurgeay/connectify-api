@@ -22,6 +22,10 @@ module.exports = async (req, res, next) => {
         "X-RateLimit-Reset",
         new Date(Date.now() + rateLimiterRes.msBeforeNext).toISOString()
       );
+      req.limit = {
+        rateLimitMax: MAX_REQUEST_LIMIT,
+        rateLimitRemaining: rateLimiterRes.remainingPoints,
+      };
       next();
     })
     .catch(() => {
