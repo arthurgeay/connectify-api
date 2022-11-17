@@ -1,6 +1,6 @@
 const argon2 = require("argon2");
 const ApiUser = require("../models/apiUser");
-const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res, next) => {
   try {
@@ -10,10 +10,19 @@ exports.register = async (req, res, next) => {
       password: passwordHashed,
     });
 
-    await apiUser.save();
+    const user = await apiUser.save();
+    const loggedUser = {
+      _id: user._id,
+      email: user.email,
+    };
 
-    return res.json({ message: "User created" });
+    const token = jwt.sign({ userId: loggedUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    return res.json({ token: token, user: loggedUser });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       error:
         "An error occured. Please check if all elements are send it correctly",
@@ -40,7 +49,11 @@ exports.login = async (req, res, next) => {
       email: user.email,
     };
 
-    return res.json({ user: loggedUser, token: "token" });
+    const token = jwt.sign({ userId: loggedUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    return res.json({ user: loggedUser, token: token });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "An error occured" });
