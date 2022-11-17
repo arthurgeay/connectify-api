@@ -18,7 +18,11 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("Error connecting to MongoDB", err));
 
-app.use(cors());
+app.use(
+  cors({
+    exposeHeaders: ["X-Ratelimit-Limit", "X-Ratelimit-Remaining"],
+  })
+);
 app.use(express.json());
 app.use(rateLimiterMiddleware);
 
