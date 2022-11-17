@@ -4,6 +4,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const authMiddleware = require("./middleware/auth");
+
 const apiUserRoutes = require("./routes/apiUser");
 const userRoutes = require("./routes/user");
 const activityRoutes = require("./routes/activity");
@@ -19,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", apiUserRoutes);
-app.use("/users", userRoutes);
-app.use("/activities", activityRoutes);
+app.use("/users", authMiddleware, userRoutes);
+app.use("/activities", authMiddleware, activityRoutes);
 
 module.exports = app;

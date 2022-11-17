@@ -22,7 +22,6 @@ exports.register = async (req, res, next) => {
 
     return res.json({ token: token, user: loggedUser });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       error:
         "An error occured. Please check if all elements are send it correctly",
@@ -35,13 +34,13 @@ exports.login = async (req, res, next) => {
     const user = await ApiUser.findOne({ email: req.body.email });
 
     if (!user) {
-      return res.status(401).json({ message: "Bad credentials" });
+      return res.status(401).json({ error: "Bad credentials" });
     }
 
     const passwordValid = await argon2.verify(user.password, req.body.password);
 
     if (!passwordValid) {
-      return res.status(401).json({ message: "Bad credentials" });
+      return res.status(401).json({ error: "Bad credentials" });
     }
 
     const loggedUser = {
@@ -55,7 +54,6 @@ exports.login = async (req, res, next) => {
 
     return res.json({ user: loggedUser, token: token });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({ error: "An error occured" });
   }
 };
