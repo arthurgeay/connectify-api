@@ -6,7 +6,7 @@ const TOO_MANY_REQUESTS_MESSAGE = "Too many requests";
 
 const options = {
   duration: MAX_REQUEST_WINDOW,
-  max: MAX_REQUEST_LIMIT,
+  points: MAX_REQUEST_LIMIT,
 };
 
 const rateLimiter = new limiter.RateLimiterMemory(options);

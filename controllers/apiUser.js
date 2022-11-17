@@ -57,3 +57,15 @@ exports.login = async (req, res, next) => {
     return res.status(500).json({ error: "An error occured" });
   }
 };
+
+exports.getUserProfile = async (req, res, next) => {
+  const user = await ApiUser.findOne({ _id: req.auth.userId }).select(
+    "-password"
+  );
+
+  if (!user) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  return res.json(user);
+};

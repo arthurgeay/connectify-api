@@ -10,6 +10,7 @@ module.exports = async (req, res, next) => {
     const user = await ApiUser.findOne({ _id: userId });
 
     if (user) {
+      req.auth = { userId: user._id };
       next();
     } else {
       return res.status(401).json({ error: "Unauthorized" });
