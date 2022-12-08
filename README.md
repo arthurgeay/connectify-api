@@ -41,10 +41,10 @@ L'architecture de cette API REST est basée sur le modèle de trois couches:
 
 Les librairies principales utilisées par cette API REST sont les suivantes:
 
-Express: Framework web open source pour Node.js utilisé pour la couche de présentation.
-MongoDB: Système de gestion de base de données NoSQL utilisé pour la couche de stockage des données.
-Argon2: Bibliothèque de hashage de mot de passe utilisée pour la sécurisation des données.
-Cors: Bibliothèque utilisée pour gérer les requêtes Cross-Origin Resource Sharing (CORS).
-Dotenv: Bibliothèque utilisée pour gérer les variables d'environnement de l'application.
-jsonwebtoken: Bibliothèque utilisée pour la génération et la validation des tokens JWT.
-Morgan: Bibliothèque utilisée pour la journalisation des requêtes HTTP.
+- Express: Framework web open source pour Node.js utilisé pour la couche de présentation.
+- MongoDB: Système de gestion de base de données NoSQL utilisé pour la couche de stockage des données.
+- Argon2: Bibliothèque de hashage de mot de passe utilisée pour la sécurisation des données.
+- Cors: Bibliothèque utilisée pour gérer les requêtes Cross-Origin Resource Sharing (CORS).
+- Dotenv: Bibliothèque utilisée pour gérer les variables d'environnement de l'application.
+- jsonwebtoken: Bibliothèque utilisée pour la génération et la validation des tokens JWT.
+- Morgan: Bibliothèque utilisée pour la journalisation des requêtes HTTP.
