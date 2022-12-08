@@ -3,6 +3,8 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const morgan = require("morgan");
+const fs = require("fs");
 
 const authMiddleware = require("./middleware/auth");
 const rateLimiterMiddleware = require("./middleware/rateLimiter");
@@ -21,6 +23,12 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(rateLimiterMiddleware);
+
+app.use(
+  morgan("combined", {
+    stream: fs.createWriteStream("./logs/access.log", { flags: "a" }),
+  })
+);
 
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
