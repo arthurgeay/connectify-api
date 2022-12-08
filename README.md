@@ -17,4 +17,4 @@
 npm run dev
 ```
 
-API : https://connectify-api-ynov.herokuapp.com/
+API : https://connectify-api.onrender.com/
