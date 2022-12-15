@@ -1,50 +1,84 @@
 const User = require("../models/user");
 const Activity = require("../models/activity");
+const logger = require("../services/logger");
+const Joi = require("joi");
 
 exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
+    logger.info("Users fetched successfully");
     return res.status(200).json(users);
   } catch (err) {
-    return res.status(400).json(err);
+    logger.error(`Error fetching users -> ${err.message}`);
+    return res.status(400).json({ message: err.message });
   }
 };
 
 exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
+    logger.info("User fetched successfully");
     return res.json(user);
   } catch (err) {
-    return res.status(400).json(err);
+    logger.error(`Error fetching user -> ${err.message}`);
+    return res.status(400).json({ message: err.message });
   }
 };
 
 exports.createUser = async (req, res, next) => {
   try {
-    const user = new User({
-      fullname: req.body.fullname,
-      age: req.body.age,
-      city: req.body.city,
+    const userSchema = Joi.object({
+      fullname: Joi.string().required(),
+      age: Joi.number().required(),
+      city: Joi.string().required(),
     });
+
+    const { error, value } = userSchema.validate(req.body);
+
+    if (error) {
+      logger.error(`Bad input data for create user -> ${error.message}`);
+      throw new Error(error.message);
+    }
+
+    const user = new User(value);
     await user.save();
+
+    logger.info("User created successfully");
 
     return res.status(201).json(user);
   } catch (err) {
-    return res.status(400).json(err);
+    logger.error(`Error creating user -> ${err.message}`);
+    return res.status(400).json({ message: err.message });
   }
 };
 
 exports.updateUser = async (req, res, next) => {
   try {
+    const userSchema = Joi.object({
+      fullname: Joi.string().required(),
+      age: Joi.number().required(),
+      city: Joi.string().required(),
+    });
+
+    const { error, value } = userSchema.validate(req.body);
+
+    if (error) {
+      logger.error(`Bad input data for update user -> ${error.message}`);
+      throw new Error(error.message);
+    }
+
     const userUpdated = await User.findOneAndUpdate(
       { _id: req.params.id },
-      { ...req.body },
+      { ...value },
       { new: true }
     );
 
+    logger.info("User updated successfully");
+
     return res.json(userUpdated);
   } catch (err) {
-    return res.status(400).json(err);
+    logger.error(`Error updating user -> ${err.message}`);
+    return res.status(400).json({ message: err.message });
   }
 };
 
@@ -52,8 +86,11 @@ exports.deleteUser = async (req, res, next) => {
   try {
     await Activity.deleteMany({ user: req.params.id });
     await User.deleteOne({ _id: req.params.id });
+
+    logger.info("User deleted successfully");
     return res.json({ message: "User deleted" });
   } catch (err) {
-    return res.status(400).json(err);
+    logger.error(`Error deleting user -> ${err.message}`);
+    return res.status(400).json({ message: err.message });
   }
 };
