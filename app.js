@@ -4,7 +4,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const morgan = require("morgan");
-const fs = require("fs");
 
 const authMiddleware = require("./middleware/auth");
 const rateLimiterMiddleware = require("./middleware/rateLimiter");
@@ -12,6 +11,7 @@ const rateLimiterMiddleware = require("./middleware/rateLimiter");
 const apiUserRoutes = require("./routes/apiUser");
 const userRoutes = require("./routes/user");
 const activityRoutes = require("./routes/activity");
+const logger = require("./services/logger");
 
 mongoose
   .connect(
@@ -23,15 +23,21 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(rateLimiterMiddleware);
-
 app.use(
-  morgan("combined", {
-    stream: fs.createWriteStream("./logs/access.log", { flags: "a" }),
+  morgan(":method :url :status :response-time ms - :res[content-length]", {
+    stream: logger.stream,
   })
 );
 
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
 app.use("/activities", authMiddleware, activityRoutes);
+
+app.use((req, res, next) => {
+  logger.error(
+    `${404} - Resource not found - ${req.originalUrl} - ${req.method}`
+  );
+  return res.status(404).json({ message: "Resource not found" });
+});
 
 module.exports = app;

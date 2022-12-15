@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const ApiUser = require("../models/apiUser");
+const logger = require("../services/logger");
 
 module.exports = async (req, res, next) => {
   try {
@@ -13,6 +14,8 @@ module.exports = async (req, res, next) => {
       req.auth = { userId: user._id };
       next();
     } else {
+      logger.info("Unauthorized request");
+
       return res.status(401).json({ error: "Unauthorized" });
     }
   } catch (error) {

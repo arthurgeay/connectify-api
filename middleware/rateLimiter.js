@@ -1,4 +1,5 @@
 const limiter = require("rate-limiter-flexible");
+const logger = require("../services/logger");
 
 const MAX_REQUEST_LIMIT = 20;
 const MAX_REQUEST_WINDOW = 60;
@@ -29,6 +30,7 @@ module.exports = async (req, res, next) => {
       next();
     })
     .catch(() => {
+      logger.error(`${TOO_MANY_REQUESTS_MESSAGE} for ${req.ip}`);
       res.status(429).json({ message: TOO_MANY_REQUESTS_MESSAGE });
     });
 };

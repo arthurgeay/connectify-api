@@ -1,6 +1,7 @@
 const argon2 = require("argon2");
 const ApiUser = require("../models/apiUser");
 const jwt = require("jsonwebtoken");
+const logger = require("../services/logger");
 
 exports.register = async (req, res, next) => {
   try {
@@ -17,11 +18,14 @@ exports.register = async (req, res, next) => {
     };
 
     const token = jwt.sign({ userId: loggedUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "8h",
     });
+
+    logger.info("User registered successfully");
 
     return res.json({ token: token, user: loggedUser });
   } catch (err) {
+    logger.error("Error registering user", err.message);
     return res.status(500).json({
       error:
         "An error occured. Please check if all elements are send it correctly",
@@ -49,11 +53,14 @@ exports.login = async (req, res, next) => {
     };
 
     const token = jwt.sign({ userId: loggedUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "8h",
     });
+
+    logger.info("User logged in successfully");
 
     return res.json({ user: loggedUser, token: token });
   } catch (err) {
+    logger.error("Error logging in user", err.message);
     return res.status(500).json({ error: "An error occured" });
   }
 };
@@ -64,8 +71,11 @@ exports.getUserProfile = async (req, res, next) => {
   );
 
   if (!user) {
+    logger.error("Error fetching user profile", err.message);
     return res.status(401).json({ error: "Unauthorized" });
   }
+
+  logger.info("User profile fetched successfully");
 
   return res.json({ ...req.limit, email: user.email });
 };
