@@ -5,7 +5,7 @@ const Joi = require("joi");
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find({ apiUserManager: req.auth.userId });
     logger.info("Users fetched successfully");
     return res.status(200).json(users);
   } catch (err) {
@@ -16,7 +16,15 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({
+      _id: req.params.id,
+      apiUserManager: req.auth.userId,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     logger.info("User fetched successfully");
     return res.json(user);
   } catch (err) {
@@ -40,7 +48,7 @@ exports.createUser = async (req, res, next) => {
       throw new Error(error.message);
     }
 
-    const user = new User(value);
+    const user = new User({ ...value, apiUserManager: req.auth.userId });
     await user.save();
 
     logger.info("User created successfully");
@@ -85,7 +93,12 @@ exports.updateUser = async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   try {
     await Activity.deleteMany({ user: req.params.id });
-    await User.deleteOne({ _id: req.params.id });
+    const result = await User.deleteOne({
+      _id: req.params.id,
+      apiUserManager: req.auth.userId,
+    });
+
+    if (result.deletedCount === 0) throw new Error("User not found");
 
     logger.info("User deleted successfully");
     return res.json({ message: "User deleted" });

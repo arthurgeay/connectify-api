@@ -4,7 +4,10 @@ const Joi = require("joi");
 
 exports.getActivities = async (req, res, next) => {
   try {
-    const activities = await Activity.find({ user: req.params.userId });
+    const activities = await Activity.find({ user: req.params.userId }).sort({
+      date: "desc",
+    });
+
     logger.info("Activities fetched successfully");
 
     return res.status(200).json(activities);
@@ -20,6 +23,10 @@ exports.getActivity = async (req, res, next) => {
       _id: req.params.activityId,
       user: req.params.userId,
     });
+
+    if (!activity) {
+      return res.status(404).json({ message: "Activity not found" });
+    }
 
     logger.info("Activity fetched successfully");
 
