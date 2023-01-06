@@ -33,7 +33,7 @@ app.use(
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
 app.use("/activities", authMiddleware, activityRoutes);
-app.use("/temperature", authMiddleware, temperatureRoutes);
+app.use("/temperatures", authMiddleware, temperatureRoutes);
 
 app.use((req, res, next) => {
   logger.error(
