@@ -11,6 +11,7 @@ const rateLimiterMiddleware = require("./middleware/rateLimiter");
 const apiUserRoutes = require("./routes/apiUser");
 const userRoutes = require("./routes/user");
 const activityRoutes = require("./routes/activity");
+const weatherRoutes = require("./routes/weather");
 const logger = require("./services/logger");
 
 mongoose
@@ -32,6 +33,7 @@ app.use(
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
 app.use("/activities", authMiddleware, activityRoutes);
+app.use("/weathers", weatherRoutes);
 
 app.use((req, res, next) => {
   logger.error(
