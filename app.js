@@ -12,6 +12,8 @@ const apiUserRoutes = require("./routes/apiUser");
 const userRoutes = require("./routes/user");
 const activityRoutes = require("./routes/activity");
 const temperatureRoutes = require("./routes/temperature");
+const weatherRoutes = require("./routes/weather");
+const countryRoutes = require("./routes/country");
 const logger = require("./services/logger");
 
 mongoose
@@ -33,7 +35,11 @@ app.use(
 app.use("/", apiUserRoutes);
 app.use("/users", authMiddleware, userRoutes);
 app.use("/activities", authMiddleware, activityRoutes);
+
 app.use("/temperatures", authMiddleware, temperatureRoutes);
+app.use("/weathers", weatherRoutes);
+app.use("/countries", countryRoutes);
+
 
 app.use((req, res, next) => {
   logger.error(
